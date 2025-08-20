@@ -6,7 +6,7 @@ on:
     # 每天 KST 时间 15:50 运行 (北京时间 14:50，UTC 时间 06:50)
     # Cron 语法: (分钟 小时 天 月 星期)
     # 更多信息: https://docs.github.com/en/actions/reference/events-that-trigger-workflows#schedule
-    - cron: '50 6 * * *' 
+    - cron: '0 12 * * *' 
 
 jobs:
   checkin:
