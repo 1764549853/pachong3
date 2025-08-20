@@ -1,36 +1,34 @@
-name: 自动签到任务
+name: Daily iOShaShiQi Check-in # 工作流的名称
 
-# 触发条件：每天早上8点执行，同时允许手动触发
 on:
+  workflow_dispatch: # 允许手动从 GitHub Actions 界面触发此工作流
   schedule:
-    - cron: '0 0 * * *'  # UTC时间0点，对应北京时间8点
-  workflow_dispatch:  # 允许手动触发
+    # 每天 KST 时间 15:50 运行 (北京时间 14:50，UTC 时间 06:50)
+    # Cron 语法: (分钟 小时 天 月 星期)
+    # 更多信息: https://docs.github.com/en/actions/reference/events-that-trigger-workflows#schedule
+    - cron: '50 6 * * *' 
 
 jobs:
   checkin:
-    runs-on: ubuntu-latest  # 使用Ubuntu环境
-    
+    runs-on: ubuntu-latest # 使用最新的 Ubuntu 操作系统作为运行环境
+
     steps:
-      - name: 拉取代码仓库
+      - name: Checkout code # 步骤1: 检出仓库代码
         uses: actions/checkout@v4
-      
-      - name: 设置Python环境
+
+      - name: Set up Python 3.x # 步骤2: 设置 Python 环境
         uses: actions/setup-python@v5
         with:
-          python-version: '3.9'  # 指定Python版本
-      
-      - name: 安装依赖包
+          python-version: '3.9' # 指定 Python 版本，可以根据需要更改
+
+      - name: Install dependencies # 步骤3: 安装 Python 依赖
         run: |
           python -m pip install --upgrade pip
-          pip install requests lxml
-      
-      - name: 执行签到脚本
-        env:
-          # 从GitHub Secrets中获取敏感信息
-          USERNAME: ${{ secrets.HASHIQI_USERNAME }}
-          PASSWORD: ${{ secrets.HASHIQI_PASSWORD }}
-        run: python checkin.py  # 假设脚本名为checkin.py
-      
-      - name: 输出签到结果
-        if: always()  # 即使前一步失败也执行
-        run: echo "签到任务已执行，查看上方日志了解详情"
+          pip install requests lxml # 安装脚本所需的库
+
+      - name: Run check-in script # 步骤4: 运行你的 Python 脚本
+        env: # 设置环境变量，将 GitHub Secrets 传递给 Python 脚本
+          IOSHASHIQI_USERNAME: ${{ secrets.IOSHASHIQI_USERNAME }}
+          IOSHASHIQI_PASSWORD: ${{ secrets.IOSHASHIQI_PASSWORD }}
+        run: |
+          python checkin.py # 将 'checkin.py' 替换为你的 Python 文件名，例如 'ai3.py'
