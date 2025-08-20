@@ -8,8 +8,8 @@ qiandao_url = "https://vip.ioshashiqi.com/aspx3/mobile/qiandao.aspx?action=list&
 user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
 
 # 从环境变量中获取用户名和密码 (适用于 GitHub Actions Secrets)
-USERNAME = os.environ.get('HASHIQI_USERNAME', '')
-PASSWORD = os.environ.get('HASHIQI_PASSWORD', '')
+USERNAME = os.environ.get('HASHIQI_USERNAME')
+PASSWORD = os.environ.get('HASHIQI_PASSWORD')
 
 # 如果敏感信息缺失，程序直接退出 (本地测试时可暂时注释，或设置环境变量)
 if not USERNAME or not PASSWORD:
