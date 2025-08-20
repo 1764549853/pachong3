@@ -1,0 +1,36 @@
+name: 自动签到任务
+
+# 触发条件：每天早上8点执行，同时允许手动触发
+on:
+  schedule:
+    - cron: '0 0 * * *'  # UTC时间0点，对应北京时间8点
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  checkin:
+    runs-on: ubuntu-latest  # 使用Ubuntu环境
+    
+    steps:
+      - name: 拉取代码仓库
+        uses: actions/checkout@v4
+      
+      - name: 设置Python环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'  # 指定Python版本
+      
+      - name: 安装依赖包
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests lxml
+      
+      - name: 执行签到脚本
+        env:
+          # 从GitHub Secrets中获取敏感信息
+          USERNAME: ${{ secrets.CHECKIN_USERNAME }}
+          PASSWORD: ${{ secrets.CHECKIN_PASSWORD }}
+        run: python checkin.py  # 假设脚本名为checkin.py
+      
+      - name: 输出签到结果
+        if: always()  # 即使前一步失败也执行
+        run: echo "签到任务已执行，查看上方日志了解详情"
