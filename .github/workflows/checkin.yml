@@ -27,8 +27,8 @@ jobs:
       - name: 执行签到脚本
         env:
           # 从GitHub Secrets中获取敏感信息
-          USERNAME: ${{ secrets.CHECKIN_USERNAME }}
-          PASSWORD: ${{ secrets.CHECKIN_PASSWORD }}
+          USERNAME: ${{ secrets.HASHIQI_USERNAME }}
+          PASSWORD: ${{ secrets.HASHIQI_PASSWORD }}
         run: python checkin.py  # 假设脚本名为checkin.py
       
       - name: 输出签到结果
